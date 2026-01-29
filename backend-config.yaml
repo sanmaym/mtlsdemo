@@ -1,0 +1,40 @@
+affinityCookieTtlSec: 0
+backends:
+- balancingMode: UTILIZATION
+  capacityScaler: 1.0
+  group: https://www.googleapis.com/compute/beta/projects/santest-1/zones/europe-west1-b/instanceGroups/sanalt-igm-1
+connectionDraining:
+  drainingTimeoutSec: 300
+creationTimestamp: '2025-06-19T09:57:22.394-07:00'
+customRequestHeaders:
+- X-Client-Cert-Valid-Not-Before:{client_cert_valid_not_before}
+- X-Client-Cert-SPIFFE:{client_cert_spiffe_id}
+- X-Client-Cert-DNSName-SANs:{client_cert_dnsname_sans}
+- X-Client-Cert-Error:{client_cert_error}
+- X-Client-Cert-Serial-Number:{client_cert_serial_number}
+- X-Client-Cert-Chain-Verified:{client_cert_chain_verified}
+- X-Client-Cert-URI-SANs:{client_cert_uri_sans}
+- 'Client-Region: {client_region}'
+- X-Client-Cert-Present:{client_cert_present}
+description: ''
+enableCDN: false
+fingerprint: Uho9JMINuZk=
+healthChecks:
+- https://www.googleapis.com/compute/beta/projects/santest-1/global/healthChecks/sanalt-tcp-hc
+kind: compute#backendService
+loadBalancingScheme: EXTERNAL_MANAGED
+name: sanalt-app-bs
+port: 80
+portName: sanalt-https
+protocol: HTTPS
+selfLink: https://www.googleapis.com/compute/beta/projects/santest-1/global/backendServices/sanalt-app-bs
+sessionAffinity: NONE
+timeoutSec: 10
+tlsSettings:
+  authenticationConfig: //networksecurity.googleapis.com/projects/santest-1/locations/global/backendAuthenticationConfigs/sanalt-backend-auth-config
+  sni: examplebackeendsvc.com
+  subjectAltNames:
+  - dnsName: examplebackeendsvc.com
+  - dnsName: api.examplebackeendsvc.com
+usedBy:
+- reference: https://www.googleapis.com/compute/beta/projects/santest-1/global/urlMaps/sanalt-url-map

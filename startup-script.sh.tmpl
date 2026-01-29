@@ -1,0 +1,48 @@
+#!/bin/bash
+
+apt-get update 
+apt-get install -y apache2 php
+apt-get install -y wget
+cd /var/www/html
+rm index.html -f
+rm index.php -f
+wget https://raw.githubusercontent.com/astianseb/sg-helper-scripts/refs/heads/main/index.php
+wget https://raw.githubusercontent.com/astianseb/sg-helper-scripts/refs/heads/main/server.php
+META_REGION_STRING=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/zone" -H "Metadata-Flavor: Google")
+REGION=`echo "$META_REGION_STRING" | awk -F/ '{print $4}'`
+sed -i "s|region-here|$REGION|" index.php
+a2enmod ssl
+a2ensite default-ssl
+
+# Create directory
+mkdir -p /etc/ssl/myapp
+
+# Write key and cert 
+cat <<EOF > /etc/ssl/myapp/be-server.key
+${SERVER_KEY}
+EOF
+
+cat <<EOF > /etc/ssl/myapp/be-server.cert
+${SERVER_CERT}
+EOF
+
+cat <<EOF > /etc/ssl/myapp/lb-root.cert
+${LB_ROOT}
+EOF
+cd /etc/ssl/myapp
+sudo cp ./be-server.key /etc/ssl/private/be-server.key
+sudo cp ./be-server.cert /etc/ssl/certs/be-server.cert
+sudo cp ./lb-root.cert /etc/ssl/certs/be-client-root.cert
+
+
+sudo sed -i '/<\/VirtualHost>/i \
+SSLCertificateFile /etc/ssl/certs/be-server.cert\n\
+SSLCertificateKeyFile /etc/ssl/private/be-server.key\n\
+SSLVerifyClient require\n\
+SSLVerifyDepth 5\n\
+SSLCACertificateFile /etc/ssl/certs/be-client-root.cert' \
+/etc/apache2/sites-available/default-ssl.conf
+
+
+sudo c_rehash /etc/ssl/certs/
+sudo systemctl restart apache2.service
