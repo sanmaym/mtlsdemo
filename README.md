@@ -2,7 +2,6 @@
 
 This README file provides instructions for setting up and testing a frontend service with mutual TLS (mTLS) enabled. Follow these steps to deploy the necessary infrastructure, obtain the server certificate, and run a test command.
 
----
 
 ## 1. Terraform deployment
 
@@ -27,7 +26,6 @@ cd ..
 terraform apply
 ```
 
----
 
 ## 2. Obtain Forwarding Rule IP
 
@@ -42,7 +40,6 @@ For example:
 gcloud compute forwarding-rules describe sanalt1-fr --global --project=santest-1
 ```
 
----
 
 ## 3. Test the Service with mTLS
 
