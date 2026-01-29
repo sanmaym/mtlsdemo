@@ -54,12 +54,12 @@ Finally, go back to the `frontend` directory and use `curl` to test the service 
     cd frontend
     ```
 2. 
- * **Run the following command to get the `server.crt` file by inputting the forwarding rule IP from previous step:**
+  **Run the following command to get the `server.crt` file by inputting the forwarding rule IP from previous step:**
     ```bash
-    openssl s_client -connect 34.107.136.149:443 -servername san-gxlb.com -showcerts </dev/null \
-  2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server.crt
+    openssl s_client -connect 34.107.136.149:443 -servername san-gxlb.com -showcerts </dev/null 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > server.crt
   ```
 3.  **Run the following `curl` command by substituting the IP from previous step:**
+
     ```bash
     curl -v --cert ./fe-client.cert \
         --key ./fe-client.key \
